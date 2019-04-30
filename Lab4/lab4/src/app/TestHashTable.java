@@ -1,0 +1,80 @@
+package app;
+
+import java.util.Random;
+
+public class TestHashTable {
+    public static void main(String[] args) throws Exception {
+      for(double i = 1.0/10; i < 9.0/10; i += 1.0/10) {
+         double avg = 0; 
+         for (int j = 0; j < 100; j++) {
+            avg += probeNumsLin(100000, i); 
+         }
+         System.out.println("Avg for load factor " + i + " = " + avg/100); 
+         System.out.println("Theoretical for factor " + i + " = " + (0.5) * (1 + (1/(1-i)))); 
+         System.out.println("\n"); 
+      } 
+
+
+      for(double i = 1.0/10; i < 9.0/10; i += 1.0/10) {
+         double avg = 0; 
+         for (int j = 0; j < 100; j++) {
+            avg += probeNumsQuad(100000, i); 
+         }
+         System.out.println("Avg for load factor " + i + " = " + avg/100); 
+         System.out.println("Theoretical for factor " + i + " = " + (0.5) * (1 + (1/(1-i)))); 
+         System.out.println("\n"); 
+      } 
+
+      System.out.println("Quadratic Probing"); 
+      HashTableQuad qtable = new HashTableQuad(5, 0.4); 
+      qtable.insert(4);
+      qtable.insert(30);
+      qtable.insert(43);
+      qtable.insert(5);
+      qtable.insert(18);
+      qtable.insert(88);
+      qtable.insert(25);
+      qtable.printKeysAndIndexes();
+      System.out.println(qtable.getTableSize()); 
+      System.out.println(qtable.getNumKeys()); 
+      System.out.println(qtable.getMaxLoad()); 
+      System.out.println(qtable.isIn(43)); 
+      System.out.println(qtable.isIn(99)); 
+
+
+      System.out.println("Linear Probing"); 
+      HashTableLin table = new HashTableLin(3, 0.5);
+      table.insert(4);
+      table.insert(30);
+      table.insert(43);
+      table.insert(8);
+      table.printKeysAndIndexes();
+      System.out.println(table.getTableSize()); 
+      System.out.println(table.getNumKeys()); 
+      System.out.println(table.getMaxLoad()); 
+      System.out.println(table.isIn(43)); 
+      System.out.println(table.isIn(99)); 
+   }
+
+   public static double probeNumsLin(int keyNum, double load){
+      int probes = 0; 
+      Random rand = new Random(); 
+      HashTableLin linTable = new HashTableLin(keyNum, load); 
+      for (int i = 0; i < keyNum; i++) {
+         probes += linTable.insertCount(rand.nextInt(99999999)); 
+      }
+
+      return (double) probes/keyNum;
+   }
+
+   public static double probeNumsQuad(int keyNum, double load){
+      int probes = 0; 
+      Random rand = new Random(); 
+      HashTableQuad quadTable = new HashTableQuad(keyNum, load); 
+      for (int i = 0; i < keyNum; i++) {
+         probes += quadTable.insertCount(rand.nextInt(99999999)); 
+      }
+
+      return (double) probes/keyNum;
+   }
+}
