@@ -1,1 +1,1 @@
-# DataStructuresLabs
+# Data Structures Labs
